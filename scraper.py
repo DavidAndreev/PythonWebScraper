@@ -17,9 +17,9 @@ WAITING_TIME = 1
 
 def main():
     # starting page number
-    pageCounter = 7
+    pageCounter = 13
 
-    zakazkaCounter = 121
+    zakazkaCounter = 184
 
     # ordered_headers_list = []
     # for headers in headers_list:
