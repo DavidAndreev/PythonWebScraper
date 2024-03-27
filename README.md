@@ -5,14 +5,14 @@ Scrapes the website of https://www.uvo.gov.sk/ for the orders with given filter 
 ## Usage
 
 First, create your Google Cloud API key as json file and paste it in the project folder.
-Then link to this file in the ```paster .py ``` on the following line:
+Then link to this file in the ```paster .py``` on the following line:
 
 ```py
 # Google Cloud API key file
 SERVICE_KEY_PATH = 'your-api-key-json-file.json'
 ```
 
-Find the ID of your Google Sheet Document (in the URL for example) and paste in the following line of the ```paster .py ```
+Find the ID of your Google Sheet Document (in the URL for example) and paste in the following line of the ```paster .py```
 
 ```py
 # ID of the GoogleSheet document - needs to be permitted to edit by anyone
@@ -27,13 +27,13 @@ Change directory to the project folder
 ```bash
 cd folder-name 
 ```
-Install the dependencies from the ```requirements .txt ``` file
+Install the dependencies from the ```requirements .txt``` file
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the  ```scraper .py ```
+Run the  ```scraper .py```
 
 ```bash
 python scraper.py
