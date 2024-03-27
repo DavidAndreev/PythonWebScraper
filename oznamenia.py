@@ -16,26 +16,20 @@ def getOznamenia(urlOznamenia:str):
        List of dictionaries containing oznamenie data: skratka, datumZverejnenia, urlOznamenie
     
     """
-
-
     from scraper import PRE_URL
-
     try:
         response = requests.get(urlOznamenia)
         soup = BeautifulSoup(response.content, 'html.parser')
-        rows = soup.findAll("tr")
+        rows = soup.findAll('tr')
         del rows [:3]
         oznamenia = []
         for row in rows:
             cells =  row.findAll('td')
             try:
-                # get the skratka from the cell containing the title        
                 titleStrings = list(cells[0].stripped_strings)
                 firstTitleString = titleStrings[0]
                 skratka = firstTitleString[len(firstTitleString)-3:]
-
                 datumZverejnenia = cells[1].get_text().strip()
-                print (datumZverejnenia)
                 onclick = row['onclick']
                 urlOznamenie = PRE_URL + onclick[onclick.index("'")+1:-1]
                 oznamenia.append({

@@ -32,15 +32,9 @@ def getDetails(urlDetails:str):
             cpv = detailyZakazky[5].findAll('td')[0].get_text().strip()
             druh = detailyZakazky[7].findAll('td')[0].get_text().strip()
             datumZverejnenia = detailyZakazky[len(detailyZakazky)-2].findAll('td')[0].get_text().strip()
-            print ('DATUM ZVEREJNENIA')
-            print (datumZverejnenia)
             if (datumZverejnenia == ''):
                 datumZverejnenia = "n/a"
-            
-            print("random")
-            print(random.uniform(0, 1))
-            print("random 2")
-            print(random.uniform(0, 1))
+                
             time.sleep(WAITING_TIME+ random.uniform(0, 1))
             urlDocuments =  urlDetails.replace('detail', 'dokumenty')
             documents = getDocuments(urlDocuments)

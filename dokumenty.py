@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-
 def getDocuments(urlDocuments: str):
     """Scrapes the specified URL and returns a list of documents linked to zakazka
 
@@ -19,7 +18,7 @@ def getDocuments(urlDocuments: str):
     try:
         response = requests.get(urlDocuments)
         soup = BeautifulSoup(response.content, 'html.parser')
-        rows = soup.findAll("tr")
+        rows = soup.findAll('tr')
         # remove first 3 rows cause it's not the data
         del rows[:3]
         documents = []

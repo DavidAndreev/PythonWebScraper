@@ -17,78 +17,53 @@ WAITING_TIME = 1
 
 def main():
     # starting page number
-    pageCounter = 13
-
-    zakazkaCounter = 184
-
-    # ordered_headers_list = []
-    # for headers in headers_list:
-    #     h = OrderedDict()
-    #     for header,value in headers.items():
-    #         h[header]=value
-    #     ordered_headers_list.append(h)
-
-    while (True):        
+    pageCounter = 1
+    zakazkaCounter = 1
+    while (True):
         try:
-            print ("rewuesting again")
-            print (pageCounter)
-            print (f'{URL}&page={pageCounter}')
+            # the headers are being rotated randomly in order to try to overcome the bot protection of the webstie
             response = requests.get(f'{URL}&page={pageCounter}', headers=random.choice(headers_list))
-            soup = BeautifulSoup(response.content, 'html.parser')
-
-            #get all <tr> tags from the website
+            soup = BeautifulSoup(response.content, 'html.parser')            
+            # get all <tr> tags from the website
             tableRows = soup.findAll("tr")
-
-            # remove the first row cause it contains the table header and not the data              
+            # remove the first row cause it contains the table header and not the data
             tableRows.pop(0)
-
-            for element in tableRows:                
+            for element in tableRows:
+                print(f'Fetching zakazka:{zakazkaCounter}')
                 # get all 'a' tags in each row
                 aTags = element.findAll('a')
                 # first 'a' tag in each row is the Zakazka
-                zakazka = aTags [0]
+                zakazka = aTags[0]
                 titleZakazka = zakazka.get_text().strip()
                 urlZakazka = PRE_URL + zakazka['href']
-                obstaravatel = aTags[1].get_text().strip()                
-                print ("Zakazka")
-                print (titleZakazka)
-                print ("OBSTARAVATEL")
-                print (obstaravatel)
-                print (urlZakazka)
-                #wait before getting the details because it uses an http request
+                obstaravatel = aTags[1].get_text().strip()
+                # wait before getting the details because it uses an http request, the random is there to try to overcome the bot detection of the website
                 time.sleep(WAITING_TIME + random.uniform(0, 1))
-                details = getDetails(urlZakazka)                
+                details = getDetails(urlZakazka)
                 zakazkaDict = {
-                    'titleZakazka':titleZakazka,
-                    'obstaravatel':obstaravatel,
+                    'titleZakazka': titleZakazka,
+                    'obstaravatel': obstaravatel,
                     'urlZakazka': urlZakazka,
                     'detaily': details
                 }
-                # the first row in GoogleSheets is used for header therefore zakazkaCounter + 1 
+                # the first row in GoogleSheets is used for header therefore zakazkaCounter + 1
                 paster.pasteToGoogleSheets(zakazkaDict, zakazkaCounter+1)
                 zakazkaCounter = zakazkaCounter + 1
-        
-        except requests.exceptions.RequestException as e :        
+
+        except requests.exceptions.RequestException as e:
             raise e
-        
+
         # wait before fetching next page
         time.sleep(WAITING_TIME)
-        pageCounter = pageCounter + 1 
-        print("Going to next page")
-        print(pageCounter)
-
+        pageCounter = pageCounter + 1
         # the button linking to the last page is not clickable on the last page - it changes to a span tag, so the findAll('a' returns empty string
         lastPageButton = soup.find_all("a", {"class": "pag-last"})
-        print("Last page button")
-        print(lastPageButton)
-        print("Last page buutton type")
-        print(type(lastPageButton))
-
         if not lastPageButton:
             print('Bottom of last page reached. Exiting')
             break
         else:
             continue
+
 
 if __name__ == '__main__':
     main()
